@@ -1,25 +1,15 @@
-import { Button } from "@/components/ui/button";
-import { useAuthActions } from "../../hooks/useAuthActions";
+import { CardFooterAuth } from "@/components/cardFooterAuth";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useAuthActions } from "@/hooks/useAuthActions";
 
 export const LoginPage = () => {
-  const { loginWithGoogle } = useAuthActions();
-
-  const handleLoginWithGoogle = async () => {
-    const result = await loginWithGoogle();
-    if(result.success){
-      console.log("Login Succesful");
-    }else {
-      console.error("Login failed", result.error);
-    }
-  }
+  const { loading } = useAuthActions();
 
   return (
     <Card>
@@ -30,11 +20,7 @@ export const LoginPage = () => {
         </CardDescription>
       </CardHeader>
       <CardContent>...</CardContent>
-      <CardFooter>
-        <Button onClick={handleLoginWithGoogle} className="w-full">
-          Login with Google
-        </Button>
-      </CardFooter>
+      <CardFooterAuth type="login" loaidng={loading} />
     </Card>
   );
 };
