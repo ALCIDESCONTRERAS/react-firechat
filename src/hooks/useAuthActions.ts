@@ -23,7 +23,6 @@ export const useAuthActions = () => {
     email: string;
     password: string;
   }): Promise<authActionsResult> => {
-
     setLoading(true);
     try {
       await signInWithEmailAndPassword(auth, data.email, data.password);
@@ -48,7 +47,6 @@ export const useAuthActions = () => {
     password: string;
     displayName: string;
   }): Promise<authActionsResult> => {
-
     setLoading(true);
     try {
       const currentUser = await createUserWithEmailAndPassword(
@@ -61,13 +59,14 @@ export const useAuthActions = () => {
         await updateProfile(currentUser.user, {
           displayName: data.displayName,
         });
+
+        await currentUser.user.reload();
       }
 
       return {
         success: true,
         error: null,
       };
-
     } catch (error) {
       const authError = error as AuthError;
       return {
@@ -75,61 +74,57 @@ export const useAuthActions = () => {
         error: authError,
       };
     } finally {
-		setLoading(false);
-	}
+      setLoading(false);
+    }
   };
 
   const loginWithGoogle = async (): Promise<authActionsResult> => {
-	setLoading(true);
-	try {
-		const provider = new GoogleAuthProvider();
-		await signInWithPopup(auth, provider)
+    setLoading(true);
+    try {
+      const provider = new GoogleAuthProvider();
+      await signInWithPopup(auth, provider);
 
-		return {
-			success: true,
-			error: null
-		}
-		
-	} catch (error) {
-		const authError = error as AuthError;
+      return {
+        success: true,
+        error: null,
+      };
+    } catch (error) {
+      const authError = error as AuthError;
 
-		return {
-			success: false,
-			error : authError
-		}
-		
-	} finally {
-		setLoading(false)
-	}
-  }
+      return {
+        success: false,
+        error: authError,
+      };
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  const logout = async () : Promise<authActionsResult> => {
-	setLoading(true);
-	try {
-		await signOut(auth);
-		return {
-			success: true,
-			error: null
-		}
-		
-	} catch (error) {
-		console.error("Error during logout", error);
-		const authError = error as AuthError;
-		return {
-			success: false,
-			error: authError
-		}		
-		
-	} finally {
-		setLoading(false);
-	}
-  }
+  const logout = async (): Promise<authActionsResult> => {
+    setLoading(true);
+    try {
+      await signOut(auth);
+      return {
+        success: true,
+        error: null,
+      };
+    } catch (error) {
+      console.error("Error during logout", error);
+      const authError = error as AuthError;
+      return {
+        success: false,
+        error: authError,
+      };
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return {
     loading,
     login,
     register,
-	loginWithGoogle, 
-	logout
+    loginWithGoogle,
+    logout,
   };
 };

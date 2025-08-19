@@ -7,10 +7,10 @@ import { Link } from "react-router";
 
 interface Props {
   type: "login" | "register";
-  loaidng: boolean;
+  loading: boolean;
 }
 
-export const CardFooterAuth = ({ type, loaidng }: Props) => {
+export const CardFooterAuth = ({ type, loading }: Props) => {
   const isLogin = type === "login";
 
   const { loginWithGoogle } = useAuthActions();
@@ -29,7 +29,7 @@ export const CardFooterAuth = ({ type, loaidng }: Props) => {
       <Button
         onClick={handleLoginWithGoogle}
         className="w-full"
-        disabled={loaidng}
+        disabled={loading}
         variant={"outline"}
       >
         <Mail className="mr-2" />
